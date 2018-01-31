@@ -1,5 +1,5 @@
 const express = require('express');
-
+const colors = require('colors');
 // When we require 'express', we get a function that generates an instance of
 // an express app. This object will be used to build a web server.
 const app = express();
@@ -11,11 +11,19 @@ const app = express();
 arguments: a path to match, and a callback that gets a request and a response
 argument in that order. */
 
+app.use((request, response, next) => {
+  console.log(
+    `${request.method.bold.blue} - ${request.path.underline} - ${new Date().toString().rainbow}`
+  );
+
+  next();
+});
+
 app.get('/home', (request, response) => {
   response.send('Welcome home!');
 });
 app.get('/', (request, response) => {
-  response.send('Almost home...');
+  response.send('Almost home.....');
 });
 
 const DOMAIN = 'localhost';
