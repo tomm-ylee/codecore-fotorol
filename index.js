@@ -4,6 +4,7 @@ const logger = require('morgan');
 // When we require 'express', we get a function that generates an instance of
 // an express app. This object will be used to build a web server.
 const app = express();
+app.set('view engine', 'ejs')
 
 app.use(logger('dev'));
 
@@ -23,7 +24,13 @@ argument in that order. */
 // });
 
 app.get('/home', (request, response) => {
-  response.send('Welcome home!');
+  // response.send('Welcome home!');
+
+  // Use response.render to send a template as the body of a response.
+  // response.render will, by default, look for templates inside of the /views
+  // directory. As its first argument, you must provide a string that is a path
+  // beginning from the views directory
+  response.render('home')
 });
 app.get('/', (request, response) => {
   response.send('Almost home.....');
