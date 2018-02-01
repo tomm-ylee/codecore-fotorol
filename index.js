@@ -3,6 +3,7 @@ const express = require('express');
 const colors = require('colors');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 console.log(__dirname);
 // When we require 'express', we get a function that generates an instance of
@@ -26,6 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({extended:true}));
 
+app.use(cookieParser());
+
 // URL http://www.example.com/home
 //           |     Domain    |Path|
 
@@ -40,6 +43,21 @@ argument in that order. */
 //
 //   next();
 // });
+
+app.use((req, res, next) => {
+  const username = req.cookies.username;
+
+  console.log(req.cookies);
+
+  res.locals.username = null;
+  // All properties of the 'locals' property of the response object are available
+  // as variables in all forms. Use it to set glocal variables
+  if (req.cookies.username) {
+    res.locals.username = username;
+  }
+
+  next();
+});
 
 
 const home = (request, response) => {
@@ -73,6 +91,31 @@ app.post('/contact_us', (request, response) => {
   available inside the rendered template as local variables*/
   response.render('thank_you', {fullName: fullName, message: message});
 });
+
+// HTTP VERB: GET, PATH: /sign_in
+app.get('/sign_in', (req, res) => {
+  res.render('sign_in')
+});
+
+// HTTP VERB: POST, PATH: /sign_in
+const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 7
+app.post('/sign_in', (req, res) => {
+  const username = req.body.username;
+
+  // To create a cookie, use the method `cookie` from the response
+  // object. This method takes two required arguments: a name for
+  // the cookie and a value. It takes an option third argument
+  // which is object to configure the cookie. Here we use
+  // it to set an expiration time on the cookie.
+  if (username) res.cookie('username', username, {maxAge: COOKIE_MAX_AGE});
+
+  // When using this method, cookieParser will create a header
+  // in the response to set the cookie which might look like this:
+  // Set-Cookie:username=jonsnow; Max-Age=604800; Path=/; Expires=Thu,08 Feb 2018 18:55:50 GMT
+
+  res.redirect('/');
+});
+
 
 const DOMAIN = 'localhost';
 const PORT = 4800;
