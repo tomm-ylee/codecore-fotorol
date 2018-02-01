@@ -116,6 +116,13 @@ app.post('/sign_in', (req, res) => {
   res.redirect('/');
 });
 
+// HTTP VERB: POST, PATH: /sign_out
+
+app.post('/sign_out', (req, res) => {
+  res.clearCookie('username');
+  res.redirect('/');
+});
+
 
 const DOMAIN = 'localhost';
 const PORT = 4800;
