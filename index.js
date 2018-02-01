@@ -61,6 +61,9 @@ app.use((req, res, next) => {
 
 
 const home = (request, response) => {
+  response.cookie('things', [1,2,3,3,4,5]);
+  response.cookie('myObj', [{"name": "One Punch Man", "ability": "One Punch"}]);
+
   // response.send('Welcome home!');
 
   // Use response.render to send a template as the body of a response.
@@ -75,6 +78,11 @@ app.get('/', home);
 
 // HTTP VERB: GET, PATH: /contact_us
 app.get('/contact_us', (request, response) => {
+
+  const myObj = request.cookies.myObj;
+  myObj.push({'blah': 'dah'});
+  response.cookie('myObj', myObj);
+
   console.log(request.query);
   response.render('contact_us');
 });
