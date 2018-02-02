@@ -137,3 +137,12 @@ const PORT = 4800;
 app.listen(PORT, DOMAIN, () => {
   console.log(`💻 Server listening on http://${DOMAIN}:${PORT}`);
 });
+
+// ---- After this is Day 20 lines of code. To setup the posts router
+
+// SETUP POSTS ROUTER
+const posts = require('./routes/posts');
+
+// You can prepend a path to all routes from a router by providing a first argument
+// to app.use. The first argument will be added in front of all paths from posts.
+app.use('/posts', posts);

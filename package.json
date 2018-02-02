@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "say": "echo 'Hello from fotorol server!!'",
     "db:create": "createdb --echo fotorol_dev",
-    "db:drop": "drop --echo --if-exists fotorol_dev",
-    
+    "db:drop": "drop --echo --if-exists fotorol_dev"
+
   },
   "keywords": [
     "instagram",
